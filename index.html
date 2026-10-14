@@ -49,21 +49,23 @@ body { background: var(--bg); color: var(--ink); overflow: hidden; font-family: 
 .header {
   position: fixed; top: 0; left: 0; right: 0; z-index: 5;
   min-height: 120px; box-sizing: border-box; background: #fff;
-  display: flex; flex-wrap: wrap; align-items: center; column-gap: 42px; row-gap: 9px;
+  display: flex; flex-wrap: wrap; align-items: baseline;  /* pitch's first line sits on the name's baseline */ column-gap: 42px; row-gap: 9px;
   padding: 12px 32px; color: #000;
 }
 .header .id { flex: 0 0 auto; }
-.header h1, .header .role { font-family: var(--display); font-weight: 600; font-size: 27px; line-height: 27px; margin: 0; }
+.header h1, .header .role { font-family: var(--display); font-weight: 600; font-size: 22px; line-height: 24px; margin: 0; }
+.header .role { font-size: 16px; line-height: 20px; margin-top: 2px; }
 .header nav { display: flex; gap: 16.5px; margin-top: 7.5px; font-family: var(--display); font-size: 15.75px; }
 .header nav a { color: #000; text-underline-offset: 3px; text-decoration-thickness: 1px; }
 .header nav a:focus-visible { outline: 2px solid #000; outline-offset: 3px; }
 .header .pitch { flex: 1 1 420px; min-width: 0; }
 .header .pitch p { font-family: "Merriweather", Georgia, serif; font-weight: 300; font-size: 15.75px; line-height: 18.75px; margin: 0; }
 .header .pitch p:first-child { font-weight: 400; }
-.header .pitch p + p { margin-top: 7.5px; font-style: italic; }
+.header .pitch p + p { margin-top: 7.5px; font-style: italic; line-height: 20.5px; max-width: 760px; }
 @media (max-width: 700px) {
   .header { padding: 14px 16px; }
-  .header h1, .header .role { font-size: 21px; line-height: 22.5px; }
+  .header h1, .header .role { font-size: 20px; line-height: 22px; }
+  .header .role { font-size: 15px; line-height: 18px; }
   .header nav { font-size: 13px; }
   .header .pitch p { font-size: 13px; line-height: 16px; }
 }
@@ -99,7 +101,7 @@ body { background: var(--bg); color: var(--ink); overflow: hidden; font-family: 
 <header class="header" id="header">
   <div class="id">
     <h1>Brinto Newcastle</h1>
-    <div class="role">Founding Engineer</div>
+    <div class="role">Founding Engineer<br>AI-Native Development</div>
     <nav aria-label="Contact">
       <a href="#bio">Bio</a>
       <a href="#email">Email</a>
@@ -108,7 +110,7 @@ body { background: var(--bg); color: var(--ink); overflow: hidden; font-family: 
   </div>
   <div class="pitch">
     <p>Great ideas take shape where business, product, design, and technology overlap.</p>
-    <p>I work with founders who have ambitious ideas, turning their vision into a foundation fast enough to raise capital and stable enough to grow.</p>
+    <p>I work with founders who have ambitious ideas, turning their vision into a foundation fast enough to raise capital and stable enough to grow. Agentic development backed by the systems, evaluations, and engineering judgment that make it reliable and scalable.</p>
   </div>
 </header>
 <div class="hint" id="hint">Tap a circle to expand. Tap the empty space to regroup.</div>
