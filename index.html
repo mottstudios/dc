@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Brinto Newcastle</title>
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<style>
+/* base reset (supplied by the artifact host when published there) */
+:root { color-scheme: light; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; font: 14px system-ui, sans-serif; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&family=Merriweather:wght@300&display=swap">
+<style>
+/* Layout: full-screen white field, blobs drift freely; modal covers ~88% of the viewport. Single light theme by request. */
+:root {
+  color-scheme: light;
+  --bg: #f2eee7;
+  --ink: #2a2633;
+  --muted: #6b6578;
+  --veil: rgba(42, 38, 51, 0.35);
+  --sheet: #ffffff;
+  --display: "Instrument Sans", system-ui, sans-serif;
+  --body: "Instrument Sans", system-ui, sans-serif;
+}
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--ink); overflow: hidden; font-family: var(--body); }
+/* isolated so circles add to each other like light, but not to the page background */
+#field { position: fixed; inset: 160px 0 0 0; isolation: isolate; }
+.blob {
+  position: absolute; left: 0; top: 0;
+  display: grid; place-items: center;
+  border: 0; padding: 0; cursor: pointer; border-radius: 50%;
+  background: rgb(var(--c));
+  color: #fff; font-family: var(--display); font-weight: 700;
+  mix-blend-mode: color-dodge;
+  will-change: transform;
+  -webkit-tap-highlight-color: transparent;
+}
+.blob span { position: relative; pointer-events: none; text-align: center; line-height: 1.1; padding: 0 12%; }
+.blob:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
+.header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 5;
+  min-height: 160px; box-sizing: border-box; background: #fff;
+  display: flex; flex-wrap: wrap; align-items: center; column-gap: 56px; row-gap: 12px;
+  padding: 16px 32px; color: #000;
+}
+.header .id { flex: 0 0 auto; }
+.header h1, .header .role { font-family: var(--display); font-weight: 600; font-size: 36px; line-height: 36px; margin: 0; }
+.header nav { display: flex; gap: 22px; margin-top: 10px; font-family: var(--display); font-size: 21px; }
+.header nav a { color: #000; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.header nav a:focus-visible { outline: 2px solid #000; outline-offset: 3px; }
+.header .pitch { flex: 1 1 420px; min-width: 0; max-width: 780px; }
+.header .pitch p { font-family: "Merriweather", Georgia, serif; font-weight: 300; font-size: 21px; line-height: 25px; margin: 0; }
+.header .pitch p + p { margin-top: 10px; }
+@media (max-width: 700px) {
+  .header { padding: 14px 16px; }
+  .header h1, .header .role { font-size: 28px; line-height: 30px; }
+  .header nav { font-size: 17px; }
+  .header .pitch p { font-size: 16px; line-height: 21px; }
+}
+.hint { position: fixed; z-index: 4; top: 176px; left: 32px; right: 16px; color: #000; font-family: var(--display); font-weight: 600; font-size: 15px; pointer-events: none; }
+@media (max-width: 700px) { .hint { left: 16px; font-size: 13px; } }
+
+#veil { position: fixed; inset: 0; background: var(--veil); display: grid; place-items: center; padding: 16px; z-index: 10; animation: fade .2s ease-out; }
+.sheet {
+  position: relative; background: var(--sheet);
+  width: min(92vw, 900px); height: 86%; border-radius: 28px;
+  padding: 56px clamp(20px, 5vw, 56px) 32px; overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,.2);
+  animation: pop .28s cubic-bezier(.2,1.4,.4,1);
+}
+.sheet h2 { font-family: var(--display); font-size: clamp(28px, 6vw, 44px); margin: 0 0 6px; text-wrap: balance; }
+.sheet .tag { display: inline-block; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #fff; padding: 4px 10px; border-radius: 99px; margin-bottom: 18px; }
+.sheet p { max-width: 65ch; margin: 0; font-family: "Merriweather", Georgia, serif; font-weight: 300; font-size: 21px; line-height: 25px; }
+.sheet p + p { margin-top: 10px; }
+.close {
+  position: absolute; top: 14px; right: 14px; width: 44px; height: 44px;
+  border-radius: 50%; border: 0; background: #f1eff5; color: var(--ink);
+  font-size: 26px; line-height: 1; cursor: pointer;
+}
+.close:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+@keyframes pop { from { transform: scale(.85); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes fade { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .sheet, #veil { animation: none; } }
+</style>
+</head>
+<body>
+
+<div id="field" aria-label="Projects"></div>
+<header class="header" id="header">
+  <div class="id">
+    <h1>Brinto Newcastle</h1>
+    <div class="role">Founding Engineer</div>
+    <nav aria-label="Contact">
+      <a href="#bio">Bio</a>
+      <a href="#email">Email</a>
+      <a href="#discord">Discord</a>
+    </nav>
+  </div>
+  <div class="pitch">
+    <p>Great ideas take shape where business, product, design, and technology overlap.</p>
+    <p>I work with founders who have ambitious ideas, turning their vision into a foundation fast enough to raise capital and stable enough to grow.</p>
+  </div>
+</header>
+<div class="hint" id="hint">Tap a circle to expand. Tap the empty space to regroup.</div>
+<div id="veil" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <button class="close" id="closeBtn" aria-label="Close">×</button>
+    <div class="tag" id="sheetTag"></div>
+    <h2 id="sheetTitle"></h2>
+    <p>Placeholder text. This panel will hold the details for this item: what it is, where it stands, and what comes next. Swap in real copy when it's ready.</p>
+    <p>Second paragraph of placeholder. Notes, links, images or a short status summary could live here. The panel scrolls if the content runs long.</p>
+    <p>Third paragraph of placeholder, so the layout shows how a fuller page reads at this size.</p>
+  </div>
+</div>
+
+<script>
+(() => {
+  const field = document.getElementById('field');
+  const veil = document.getElementById('veil');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const BIG = [
+    { label: 'Project 1',    color: '221, 64, 16' },   // #dd4010
+    { label: 'Lorem Ipsum',  color: '43, 130, 224' },                // #2b82e0
+    { label: 'Blabbity Blah',color: '234, 181, 33' },                // #eab521
+    { label: 'Pocket God',   color: '154, 183, 32' },                // #9ab720
+    { label: 'Ooby Dooby',   color: '183, 44, 179' },                // #b72cb3
+    { label: 'Project 6',    color: '168, 91, 34' },                 // #a85b22
+  ];
+  const SUB = ['A','B','C','D','E'];
+  // A–E are shades of their parent: lighter (+) toward white, darker (-) toward black
+  const SHADES = [0, .14, -.13, .27, -.05];
+  const shade = (rgb, k) => rgb.split(',').map(Number)
+    .map(c => Math.round(k >= 0 ? c + (255 - c) * k : c * (1 + k))).join(', ');
+
+  let blobs = [];
+  // circles live in the area below the header; on narrow screens the header grows
+  const header = document.getElementById('header');
+  let W, H;
+  function measure() {
+    field.style.top = header.offsetHeight + 'px';
+    document.getElementById('hint').style.top = (header.offsetHeight + 16) + 'px';
+    W = field.clientWidth; H = field.clientHeight;
+  }
+  measure();
+  const unit = () => Math.min(W, H);
+
+  function make(opts) {
+    const el = document.createElement('button');
+    el.className = 'blob';
+    el.innerHTML = `<span>${opts.label}</span>`;
+    el.setAttribute('aria-label', opts.label);
+    const b = {
+      el, ...opts,
+      r: opts.r, x: opts.x, y: opts.y,
+      vx: opts.vx ?? (Math.random() - .5) * 0.5,
+      vy: opts.vy ?? (Math.random() - .5) * 0.5,
+      phase: Math.random() * 1000, scale: opts.scale ?? 1,
+    };
+    el.style.width = el.style.height = (b.r * 2) + 'px';
+    el.style.setProperty('--c', b.color);
+    el.style.setProperty('--r', b.r + 'px');
+    el.style.fontSize = Math.max(14, b.r * (b.kind === 'big' ? 0.13 : 0.26)) + 'px';
+    el.addEventListener('click', e => { e.stopPropagation(); tap(b); });
+    field.appendChild(el);
+    blobs.push(b);
+    return b;
+  }
+
+  const CRUISE = reduce ? 0.15 : 0.6;
+  const DEEP = 0.62;   // centre distance / (rA + rB) below this = labels collide
+
+  // Look ahead: run the paths forward and score them. Any overlap costs a
+  // little and a deep one costs a lot (an earlier version rewarded light
+  // overlap, which pulled everything into one cluster).
+  function simulate(state, frames) {
+    const s = state.map(o => ({ ...o }));
+    let score = 0;
+    for (let f = 0; f < frames; f++) {
+      for (const o of s) {
+        o.x += o.vx; o.y += o.vy;
+        if (o.x < o.r) { o.x = o.r; o.vx = Math.abs(o.vx); }
+        if (o.x > W - o.r) { o.x = W - o.r; o.vx = -Math.abs(o.vx); }
+        if (o.y < o.r) { o.y = o.r; o.vy = Math.abs(o.vy); }
+        if (o.y > H - o.r) { o.y = H - o.r; o.vy = -Math.abs(o.vy); }
+      }
+      if (f % 3) continue;
+      for (let i = 0; i < s.length; i++) for (let j = i + 1; j < s.length; j++) {
+        const d = Math.hypot(s[i].x - s[j].x, s[i].y - s[j].y) / (s[i].r + s[j].r);
+        if (d < DEEP) score += (DEEP - d) * 10 + 1;
+        else if (d < 1) score += (1 - d) * 0.5;
+      }
+    }
+    return score;
+  }
+
+  // Billiard collisions with a soft margin: circles may overlap until their
+  // centres reach DEEP, then they bounce apart. Overlap stays light; no pile-ups.
+  function collide() {
+    for (let i = 0; i < blobs.length; i++) for (let j = i + 1; j < blobs.length; j++) {
+      const a = blobs[i], b = blobs[j];
+      if (a.gathering || b.gathering) continue;
+      const dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy);
+      if (!d || d > (a.r * a.scale + b.r * b.scale) * DEEP) continue;
+      const nx = dx / d, ny = dy / d;
+      const rel = (b.vx - a.vx) * nx + (b.vy - a.vy) * ny;
+      if (rel >= 0) continue;   // already separating
+      const ma = a.r * a.r, mb = b.r * b.r, imp = 2 * rel / (ma + mb);
+      a.vx += imp * mb * nx; a.vy += imp * mb * ny;
+      b.vx -= imp * ma * nx; b.vy -= imp * ma * ny;
+    }
+  }
+
+  // Spread the circles around the screen, then try many sets of headings
+  // and keep the one with the best next 30 s.
+  const bigR = () => (unit() * 0.12 + 25) * 1.4;
+
+  function spawnBig() {
+    const pos = BIG.map((d, i) => {
+      const r = bigR(d);
+      const a = (i / BIG.length) * Math.PI * 2 + 0.3;
+      return { x: W/2 + Math.cos(a) * (W/2 - r) * 0.75, y: H/2 + Math.sin(a) * (H/2 - r) * 0.75, r };
+    });
+    let best = null, bestScore = Infinity;
+    for (let c = 0; c < 40; c++) {
+      const state = pos.map(p => {
+        const a = Math.random() * Math.PI * 2;
+        return { ...p, vx: Math.cos(a) * CRUISE, vy: Math.sin(a) * CRUISE };
+      });
+      const sc = simulate(state, 1800);
+      if (sc < bestScore) { bestScore = sc; best = state; }
+    }
+    BIG.forEach((d, i) => make({ ...d, kind: 'big', r: best[i].r, x: best[i].x, y: best[i].y, vx: best[i].vx, vy: best[i].vy }));
+  }
+
+  function remove(b) {
+    b.el.remove();
+    blobs = blobs.filter(o => o !== b);
+  }
+
+  function tap(b) {
+    if (b.kind === 'big') splat(b);
+    else if (b.kind === 'sub') openSheet(b);
+  }
+
+  function splat(b) {
+    remove(b);
+    const r = b.r * 0.5;
+    const parent = BIG.find(d => d.label === b.label);
+    SUB.forEach((label, i) => {
+      const a = (i / SUB.length) * Math.PI * 2 + Math.random() * .4;
+      const speed = reduce ? 0.4 : 9;
+      make({ label, kind: 'sub', parent, color: shade(parent.color, SHADES[i]), r,
+        x: b.x, y: b.y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, scale: 0.3 });
+    });
+  }
+
+  // Tapping empty space: each split circle's pieces pull toward their own
+  // centroid, then fuse back into the parent.
+  let gathers = [];
+  function regroup() {
+    const parents = new Set(blobs.filter(o => o.kind === 'sub' && !o.gathering).map(o => o.parent));
+    for (const parent of parents) {
+      const subs = blobs.filter(o => o.parent === parent);
+      const cx = subs.reduce((s, o) => s + o.x, 0) / subs.length;
+      const cy = subs.reduce((s, o) => s + o.y, 0) / subs.length;
+      gathers.push({ parent, cx, cy, subs, t: 0 });
+      subs.forEach(o => { o.gathering = true; o.el.disabled = true; });
+    }
+  }
+  function stepGather() {
+    gathers = gathers.filter(g => {
+      g.t++;
+      let maxD = 0;
+      for (const o of g.subs) {
+        o.vx = (g.cx - o.x) * 0.12;
+        o.vy = (g.cy - o.y) * 0.12;
+        maxD = Math.max(maxD, Math.hypot(g.cx - o.x, g.cy - o.y));
+      }
+      if (maxD < 6 || g.t > 90) {
+        g.subs.forEach(remove);
+        make({ ...g.parent, kind: 'big', r: bigR(), x: g.cx, y: g.cy, scale: 0.55 });
+        return false;
+      }
+      return true;
+    });
+  }
+
+  function openSheet(b) {
+    document.getElementById('sheetTitle').textContent = b.parent.label + ' · ' + b.label;
+    const tag = document.getElementById('sheetTag');
+    tag.textContent = 'Section ' + b.label;
+    tag.style.background = `rgb(${b.color})`;
+        document.getElementById('closeBtn').style.background = `rgba(${b.color}, .18)`;
+    veil.hidden = false;
+    document.getElementById('closeBtn').focus();
+  }
+  function closeSheet() { veil.hidden = true; }
+
+  document.getElementById('closeBtn').addEventListener('click', closeSheet);
+  veil.addEventListener('click', e => { if (e.target === veil) closeSheet(); });
+  addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
+  field.addEventListener('click', regroup);
+
+  let t = 0;
+  function frame() {
+    t += 1;
+    stepGather();
+    collide();
+    for (const b of blobs) {
+      const n = b.phase + t * 0.004;
+      if (b.gathering) {
+        b.x += b.vx; b.y += b.vy;
+        b.scale += (0.6 - b.scale) * 0.1;
+        b.el.style.transform = `translate(${b.x - b.r}px, ${b.y - b.r}px) scale(${b.scale})`;
+        continue;
+      }
+      // straight-line travel: keep the heading, ease speed to a constant cruise
+      const sp = Math.hypot(b.vx, b.vy) || 0.01, cruise = reduce ? 0.15 : 0.6;
+      const f = (sp + (cruise - sp) * 0.04) / sp;
+      b.vx *= f; b.vy *= f;
+      b.x += b.vx; b.y += b.vy;
+      // window edges: hard rebound
+      const R = b.r * b.scale;
+      if (b.x < R)     { b.x = R;     b.vx =  Math.abs(b.vx); }
+      if (b.x > W - R) { b.x = W - R; b.vx = -Math.abs(b.vx); }
+      if (b.y < R)     { b.y = R;     b.vy =  Math.abs(b.vy); }
+      if (b.y > H - R) { b.y = H - R; b.vy = -Math.abs(b.vy); }
+      b.scale += (1 - b.scale) * 0.08;
+      b.el.style.transform = `translate(${b.x - b.r}px, ${b.y - b.r}px) scale(${b.scale})`;
+    }
+    requestAnimationFrame(frame);
+  }
+
+  addEventListener('resize', measure);
+  document.fonts?.ready.then(measure);
+  spawnBig();
+  frame();
+})();
+</script>
+
+</body>
+</html>
