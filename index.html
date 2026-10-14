@@ -17,7 +17,7 @@ img { max-width: 100%; }
 [hidden] { display: none !important; }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&family=Merriweather:wght@300&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&family=Merriweather:ital,wght@0,300;0,400;1,300&display=swap">
 <style>
 /* Layout: full-screen white field, blobs drift freely; modal covers ~88% of the viewport. Single light theme by request. */
 :root {
@@ -33,7 +33,7 @@ img { max-width: 100%; }
 html, body { height: 100%; }
 body { background: var(--bg); color: var(--ink); overflow: hidden; font-family: var(--body); }
 /* isolated so circles add to each other like light, but not to the page background */
-#field { position: fixed; inset: 160px 0 0 0; isolation: isolate; }
+#field { position: fixed; inset: 120px 0 0 0; isolation: isolate; }
 .blob {
   position: absolute; left: 0; top: 0;
   display: grid; place-items: center;
@@ -48,25 +48,26 @@ body { background: var(--bg); color: var(--ink); overflow: hidden; font-family: 
 .blob:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
 .header {
   position: fixed; top: 0; left: 0; right: 0; z-index: 5;
-  min-height: 160px; box-sizing: border-box; background: #fff;
-  display: flex; flex-wrap: wrap; align-items: center; column-gap: 56px; row-gap: 12px;
-  padding: 16px 32px; color: #000;
+  min-height: 120px; box-sizing: border-box; background: #fff;
+  display: flex; flex-wrap: wrap; align-items: center; column-gap: 42px; row-gap: 9px;
+  padding: 12px 32px; color: #000;
 }
 .header .id { flex: 0 0 auto; }
-.header h1, .header .role { font-family: var(--display); font-weight: 600; font-size: 36px; line-height: 36px; margin: 0; }
-.header nav { display: flex; gap: 22px; margin-top: 10px; font-family: var(--display); font-size: 21px; }
+.header h1, .header .role { font-family: var(--display); font-weight: 600; font-size: 27px; line-height: 27px; margin: 0; }
+.header nav { display: flex; gap: 16.5px; margin-top: 7.5px; font-family: var(--display); font-size: 15.75px; }
 .header nav a { color: #000; text-underline-offset: 3px; text-decoration-thickness: 1px; }
 .header nav a:focus-visible { outline: 2px solid #000; outline-offset: 3px; }
-.header .pitch { flex: 1 1 420px; min-width: 0; max-width: 780px; }
-.header .pitch p { font-family: "Merriweather", Georgia, serif; font-weight: 300; font-size: 21px; line-height: 25px; margin: 0; }
-.header .pitch p + p { margin-top: 10px; }
+.header .pitch { flex: 1 1 420px; min-width: 0; }
+.header .pitch p { font-family: "Merriweather", Georgia, serif; font-weight: 300; font-size: 15.75px; line-height: 18.75px; margin: 0; }
+.header .pitch p:first-child { font-weight: 400; }
+.header .pitch p + p { margin-top: 7.5px; font-style: italic; }
 @media (max-width: 700px) {
   .header { padding: 14px 16px; }
-  .header h1, .header .role { font-size: 28px; line-height: 30px; }
-  .header nav { font-size: 17px; }
-  .header .pitch p { font-size: 16px; line-height: 21px; }
+  .header h1, .header .role { font-size: 21px; line-height: 22.5px; }
+  .header nav { font-size: 13px; }
+  .header .pitch p { font-size: 13px; line-height: 16px; }
 }
-.hint { position: fixed; z-index: 4; top: 176px; left: 32px; right: 16px; color: #000; font-family: var(--display); font-weight: 600; font-size: 15px; pointer-events: none; }
+.hint { position: fixed; z-index: 4; top: 136px; left: 32px; right: 16px; color: #000; font-family: var(--display); font-weight: 600; font-size: 15px; pointer-events: none; }
 @media (max-width: 700px) { .hint { left: 16px; font-size: 13px; } }
 
 #veil { position: fixed; inset: 0; background: var(--veil); display: grid; place-items: center; padding: 16px; z-index: 10; animation: fade .2s ease-out; }
